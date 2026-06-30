@@ -793,6 +793,93 @@
     #comunidade h2 { font-size: 36px; }
   }
 
+  /* ─── MOBILE MENU ─── */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.97);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  .mobile-menu.open { opacity: 1; visibility: visible; }
+  .mobile-menu a, .mobile-menu button {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--silver-light);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover, .mobile-menu button:hover { color: var(--white); }
+  .mobile-menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+  .mobile-menu-close span {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 22px;
+    height: 1px;
+    background: var(--white);
+  }
+  .mobile-menu-close span:first-child { transform: translate(-50%,-50%) rotate(45deg); }
+  .mobile-menu-close span:last-child { transform: translate(-50%,-50%) rotate(-45deg); }
+
+  /* ─── LIGHTBOX ─── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  .lightbox.open { opacity: 1; visibility: visible; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+  }
+  .lightbox-close span {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 24px;
+    height: 1px;
+    background: var(--white);
+  }
+  .lightbox-close span:first-child { transform: translate(-50%,-50%) rotate(45deg); }
+  .lightbox-close span:last-child { transform: translate(-50%,-50%) rotate(-45deg); }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal, .hero-content, .hero-bg, .historia-img, .streetwear-img,
     .strip-inner, .scroll-line { transition: none !important; animation: none !important; }
@@ -817,6 +904,23 @@
     <span></span><span></span><span></span>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-close" id="mobile-menu-close"><span></span><span></span></div>
+  <a href="#historia">História</a>
+  <a href="#filosofia">Filosofia</a>
+  <a href="#streetwear">Streetwear</a>
+  <a href="#manifesto">Manifesto</a>
+  <button id="open-calendario">Calendário 2026</button>
+  <a href="https://chat.whatsapp.com/K1BMS56U0X21uzGgKxnOLx" target="_blank" rel="noopener">Entrar para a lista</a>
+</div>
+
+<!-- LIGHTBOX CALENDÁRIO -->
+<div class="lightbox" id="lightbox-calendario">
+  <div class="lightbox-close" id="lightbox-close"><span></span><span></span></div>
+  <img src="imagem.png" alt="Calendário BRAK 2026">
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1045,9 +1149,9 @@
       <div class="footer-col">
         <h4>Contato</h4>
         <ul>
-          <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a></li>
-          <li><a href="https://chat.whatsapp.com/K1BMS56U0X21uzGgKxnOLx" target="_blank" rel="noopener">Comunidade</a></li>
+          <li><a href="https://www.instagram.com/brakbrasil?igsh=MXIzdGQ3ZDQ5NzF1Yg==" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.tiktok.com/@samuelmendess00?_r=1&_t=ZS-97dG0rfB7ci" target="_blank" rel="noopener">TikTok</a></li>
+          <li><a href="https://chat.whatsapp.com/JPYH10XZbbDGEOcCT2cOs3?s=cl&p=a&ilr=4" target="_blank" rel="noopener">Comunidade</a></li>
         </ul>
       </div>
     </div>
@@ -1056,7 +1160,7 @@
       <div class="social-links">
         <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
         <a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
-        <a href="https://chat.whatsapp.com/K1BMS56U0X21uzGgKxnOLx" target="_blank" rel="noopener">Comunidade</a>
+        <a href="https://chat.whatsapp.com/JPYH10XZbbDGEOcCT2cOs3?s=cl&p=a&ilr=4" target="_blank" rel="noopener">Comunidade</a>
       </div>
     </div>
   </div>
@@ -1086,6 +1190,28 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(el => observer.observe(el));
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  const openMenu = () => mobileMenu.classList.add('open');
+  const closeMenu = () => mobileMenu.classList.remove('open');
+  hamburger.addEventListener('click', openMenu);
+  mobileMenuClose.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Lightbox calendário
+  const lightbox = document.getElementById('lightbox-calendario');
+  const lightboxClose = document.getElementById('lightbox-close');
+  document.getElementById('open-calendario').addEventListener('click', () => {
+    closeMenu();
+    lightbox.classList.add('open');
+  });
+  lightboxClose.addEventListener('click', () => lightbox.classList.remove('open'));
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) lightbox.classList.remove('open');
+  });
 
   // Smooth scroll for anchors
   document.querySelectorAll('a[href^="#"]').forEach(a => {
